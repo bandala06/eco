@@ -1,24 +1,44 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
+// app/_layout.tsx
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
+import { View } from 'react-native';
 
-import { useColorScheme } from '@/hooks/use-color-scheme';
+// 1. 👇 IMPORTA EL PROVIDER AQUÍ
+import { ThemeProvider, useTheme } from '../hooks/ThemeContext';
+import { BluetoothProvider } from '../hooks/useBluetooth';
 
-export const unstable_settings = {
-  anchor: '(tabs)',
-};
-
-export default function RootLayout() {
-  const colorScheme = useColorScheme();
+// Creamos un componente interno para poder usar el hook useTheme y cambiar el StatusBar
+function RootLayoutNav() {
+  const { theme, colors } = useTheme(); 
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
+    <View style={{ flex: 1, backgroundColor: colors.background }}>
+      <StatusBar style={theme === 'dark' ? 'light' : 'dark'} />
+      
+      <Stack screenOptions={{
+        headerStyle: {
+          backgroundColor: colors.cardBackground, 
+        },
+        headerTintColor: colors.text, 
+        contentStyle: {
+          backgroundColor: colors.background 
+        }
+      }}>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
       </Stack>
-      <StatusBar style="auto" />
+    </View>
+  );
+}
+
+// El componente principal que exportas
+export default function RootLayout() {
+  return (
+    // 2. 👇 AGREGAMOS EL BLUETOOTH PROVIDER AQUÍ
+    // Ahora tu app tiene acceso a Temas Y a Bluetooth
+    <ThemeProvider>
+      <BluetoothProvider>
+        <RootLayoutNav />
+      </BluetoothProvider>
     </ThemeProvider>
   );
 }

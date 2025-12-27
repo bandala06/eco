@@ -1,33 +1,35 @@
+import { Ionicons } from '@expo/vector-icons'; // ¡Un paquete de íconos popular!
 import { Tabs } from 'expo-router';
 import React from 'react';
 
-import { HapticTab } from '@/components/haptic-tab';
-import { IconSymbol } from '@/components/ui/icon-symbol';
-import { Colors } from '@/constants/theme';
-import { useColorScheme } from '@/hooks/use-color-scheme';
-
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
   return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
-        tabBarButton: HapticTab,
-      }}>
+    <Tabs>
       <Tabs.Screen
-        name="index"
+        name="index" // El nombre del archivo .tsx
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          title: 'Control', // El texto en la pestaña
+          tabBarIcon: ({ color }) => (
+            <Ionicons name="game-controller-outline" size={28} color={color} />
+          ),
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="devices" // El nombre del archivo .tsx
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          title: 'Dispositivos',
+          tabBarIcon: ({ color }) => (
+            <Ionicons name="hardware-chip-outline" size={28} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="settings" // El nombre del archivo .tsx
+        options={{
+          title: 'Ajustes',
+          tabBarIcon: ({ color }) => (
+            <Ionicons name="settings-outline" size={28} color={color} />
+          ),
         }}
       />
     </Tabs>
